@@ -15,7 +15,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from '../jsm/controls/OrbitControls.js';
 
-// Varianbes globales estandar
+// Variables globales estándar
 let container, scene, camera, renderer, controls;
 
 init();
@@ -107,3 +107,11 @@ function animate() {
 function render() {
     renderer.render(scene, camera);
 }
+
+// Skybox
+const skyBoxGeometry = new THREE.SphereGeometry(1900,1900,1900); // geometría
+const textureLoader = new THREE.TextureLoader();
+const skyboxTexture = textureLoader.load('img-textures/nieve.png');
+const skyBoxMaterial = new THREE.MeshBasicMaterial({map:skyboxTexture, side:THREE.BackSide}) // material
+const skyBox = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial) // fusionar geometría y material 
+scene.add(skyBox)
