@@ -55,24 +55,15 @@ function init() {
         false
     )
 
-    // Texturas
-    const planks = new THREE.TextureLoader().load('textures/planks.jpg', function(planks){
-        planks.wrapS = planks.wrapT = THREE.RepeatWrapping;
-        planks.offset.set( 0, 0 );
-        planks.repeat.set( 7, 7 );
-    });
-    const bookshelves = new THREE.TextureLoader().load('textures/bookshelf.jpg', function(bookshelves){
-        bookshelves.wrapS = bookshelves.wrapT = THREE.RepeatWrapping;
-        bookshelves.offset.set( 0, 0 );
-        bookshelves.repeat.set( 3, 3 );
-    });
-    const bookshelf = new THREE.TextureLoader().load('textures/bookshelf.jpg' );
+    // **TEXTURAS Y MODELOS**
+    // Textura para la Isla de nieve
     const snow = new THREE.TextureLoader().load('textures/descarga4.jpg', function(snow){
         snow.wrapS = snow.wrapT = THREE.RepeatWrapping;
         snow.offset.set( 5, 5 );
         snow.repeat.set( 4, 4 );
     });
     
+    // Material para la Isla de nieve
     const materialSnow = new THREE.MeshToonMaterial({
         map: snow,
         color: 0xffffff,
@@ -86,7 +77,7 @@ function init() {
     islandLoader.load('model/islandScene.gltf', (gltf) => {
         // Se ejecuta cuando el objeto se ha cargado correctamente
         const island = gltf.scene;
-        island.scale.set(50, 50, 50); // Ejemplo: reducir la escala del objeto en un factor de 10
+        island.scale.set(50, 50, 50); // Ejemplo: aumentar la escala del objeto en un factor de 50
     
         island.traverse(function(child) {
             if (child.isMesh) {
@@ -95,29 +86,92 @@ function init() {
         });
     
         scene.add(island); // Añade el objeto a la escena
-    });   
+    });
 
-	// Plano de suelo
-    const floorGeometry = new THREE.PlaneGeometry(1000, 1000, 100, 100);
-    const floorMaterial = new THREE.MeshLambertMaterial({color: 0xffffff, map: snow, side: THREE.DoubleSide})
-	const floor = new THREE.Mesh( floorGeometry, floorMaterial );
-	floor.position.y = -0.5;
-	floor.rotation.x = Math.PI / 2;
-	//scene.add(floor);
+    // Textura para el pinguino
+    const penguinTextureLoader = new THREE.TextureLoader();
+        penguinTextureLoader.load('model/penguin/textures/Material.002_baseColor.png', function(texture) {
+        // Material para el pinguino
+        const materialPenguin = new THREE.MeshToonMaterial({
+            map: texture,
+            side: THREE.DoubleSide
+    });
 
-    // Primer cubo
-    const cubeGeometry = new THREE.BoxGeometry( 100, 100, 100 );
-    const cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, map: bookshelf, side: THREE.DoubleSide } );
-    const cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
-    cube.position.set(100,100,0);
-    //scene.add(cube);
+    // Modelo del pinguino
+    const penguinLoader = new GLTFLoader();
+    penguinLoader.load('model/penguin/penguin.gltf', (gltf) => {
+        const penguin = gltf.scene;
+        penguin.scale.set(50, 50, 50); 
+        
+        penguin.traverse(function(child) {
+            if (child.isMesh) {
+                child.material = materialPenguin;
+            }
+        });
+    
+        scene.add(penguin);
+        });
+    });
 
-    // Segundo cubo
-    const cube1Geometry = new THREE.BoxGeometry( 100, 100, 100 );
-    const cube1Material = new THREE.MeshLambertMaterial( { color: 0xffffff, map: bookshelves, side: THREE.DoubleSide } );
-    const cube1 = new THREE.Mesh( cube1Geometry, cube1Material );
-    cube1.position.set(-100,100,0);
-    //scene.add(cube1);
+
+    // Configuración de las partículas
+    var snowflake = new THREE.PointsMaterial({
+        color: 0xffffff, // Color blanco
+        size: 5.0, // Tamaño de las partículas
+        transparent: true, // Permite la transparencia
+        opacity: 0.8, // Opacidad de las partículas
+    });
+  
+    var snowparticleCount = 10000; // Cantidad de partículas
+    var range = 3250; // Rango de coordenadas
+    
+    // Crear geometría de partículas y array de posiciones
+    var snowparticles = new THREE.BufferGeometry();
+    var snowpositions = new Float32Array(snowparticleCount * 3);
+    
+    // Generar posiciones aleatorias para las partículas
+    for (var i = 0; i < snowparticleCount; i++) {
+        snowpositions[i * 3] = Math.random() * range - range / 2; // Coordenada x
+        snowpositions[i * 3 + 1] = Math.random() * range - range / 2; // Coordenada y
+        snowpositions[i * 3 + 2] = Math.random() * range - range / 2; // Coordenada z
+    }
+  
+    // Añadir los datos de posición a la geometría
+    snowparticles.setAttribute('position', new THREE.BufferAttribute(snowpositions, 3));
+    
+    // Crear sistema de partículas
+    var snowparticleSystem = new THREE.Points(snowparticles, snowflake);
+    scene.add(snowparticleSystem);
+    
+    // Función para animar las partículas
+    function animateParticles() {
+        requestAnimationFrame(animateParticles);
+    
+        var positions = snowparticles.getAttribute('position').array;
+    
+        for (var i = 0; i < snowparticleCount; i++) {
+            var y = positions[i * 3 + 1];
+            
+            // Ajustar la posición en el eje Y para simular la caída
+            y -= Math.random() * 5; // Velocidad de caída ajustable
+        
+            // Si la partícula llega al fondo, resetear su posición en el eje Y
+            if (y < -100) {
+                y = Math.random() * range - range / 2; // Rango de alturas ajustable
+            }
+        
+            positions[i * 3 + 1] = y; // Actualizar la posición en el array
+        }
+    
+        // Actualizar los datos de posición en la geometría
+        snowparticles.getAttribute('position').needsUpdate = true;
+    
+        // Renderizar la escena
+        renderer.render(scene, camera);
+    }
+  
+    // Llamar a la función para iniciar la animación
+    animateParticles();     
 
     // Luz blanca central
     const light = new THREE.AmbientLight( 0xeeeeee );
