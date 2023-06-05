@@ -81,7 +81,7 @@ function init() {
         side: THREE.DoubleSide
     });
     
-    // Isla de nieve
+    // Isla de nieve https://sketchfab.com/3d-models/low-poly-snow-island-34eeb35d2a514f499d277d535e7999d9
     const islandLoader = new GLTFLoader();
     islandLoader.load('model/islandScene.gltf', (gltf) => {
         // Se ejecuta cuando el objeto se ha cargado correctamente
