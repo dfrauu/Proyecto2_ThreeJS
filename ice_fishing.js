@@ -111,7 +111,7 @@ function render() {
 // Skybox
 const skyBoxGeometry = new THREE.SphereGeometry(1900,1900,1900); // geometría
 const textureLoader = new THREE.TextureLoader();
-const skyboxTexture = textureLoader.load('img-textures/nieve.png');
+const skyboxTexture = textureLoader.load('textures/nieve.png');
 const skyBoxMaterial = new THREE.MeshBasicMaterial({map:skyboxTexture, side:THREE.BackSide}) // material
 const skyBox = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial) // fusionar geometría y material 
 scene.add(skyBox)
