@@ -1,0 +1,319 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 10396,
+      "max": [
+        1.2861700057983398,
+        1.2861700057983398,
+        0.6068699955940247
+      ],
+      "min": [
+        -1.2861700057983398,
+        -1.2861700057983398,
+        -0.35657998919487
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 124752,
+      "componentType": 5126,
+      "count": 10396,
+      "max": [
+        0.975280225276947,
+        0.9505681991577148,
+        1.0
+      ],
+      "min": [
+        -0.9510442018508911,
+        -0.9671378135681152,
+        -0.03986005112528801
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 10396,
+      "max": [
+        0.8204500079154968,
+        0.8229399919509888
+      ],
+      "min": [
+        0.06421999633312225,
+        0.09228000044822693
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 15606,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 249504,
+      "componentType": 5126,
+      "count": 2362,
+      "max": [
+        2.312340021133423,
+        1.2189300060272217,
+        -0.1364700049161911
+      ],
+      "min": [
+        -0.916949987411499,
+        -0.44348999857902527,
+        -0.8325700163841248
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 277848,
+      "componentType": 5126,
+      "count": 2362,
+      "max": [
+        0.9999749064445496,
+        0.9999998807907104,
+        1.0
+      ],
+      "min": [
+        -0.9999974966049194,
+        -0.9999998807907104,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 62424,
+      "componentType": 5125,
+      "count": 3546,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "Sahir Virmani (https://sketchfab.com/sahirvirmani)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/low-poly-snow-island-34eeb35d2a514f499d277d535e7999d9",
+      "title": "Low Poly Snow Island"
+    },
+    "generator": "Sketchfab-12.68.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 76608,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 83168,
+      "byteOffset": 76608,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 306192,
+      "byteOffset": 159776,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 465968,
+      "uri": "scene.bin"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "Root",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "Material.001",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.800000011920929,
+          0.800000011920929,
+          0.800000011920929,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.7289394031871449
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Plane_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Plane.001_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 5,
+            "POSITION": 4
+          },
+          "indices": 6,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.086862564086914,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.4133196865048535e-16,
+        -1.086862564086914,
+        0.0,
+        0.0,
+        1.086862564086914,
+        2.4133196865048535e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2,
+        4,
+        6
+      ],
+      "name": "Root"
+    },
+    {
+      "children": [
+        3
+      ],
+      "matrix": [
+        0.99682,
+        0.05750000000000001,
+        -0.05519000000000001,
+        0.0,
+        -0.012470000000000002,
+        0.79649,
+        0.6045200000000001,
+        0.0,
+        0.07872000000000003,
+        -0.6019100000000001,
+        0.7946700000000001,
+        0.0,
+        1.36847,
+        -3.96106,
+        5.903860000000001,
+        1.0
+      ],
+      "name": "Lamp"
+    },
+    {
+      "name": "Lamp"
+    },
+    {
+      "children": [
+        5
+      ],
+      "matrix": [
+        10.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        10.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        10.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Plane"
+    },
+    {
+      "mesh": 0,
+      "name": "Plane_0"
+    },
+    {
+      "children": [
+        7
+      ],
+      "matrix": [
+        3.9018699999999997,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        5.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        5.0,
+        0.0,
+        2.09553,
+        4.87427,
+        1.57731,
+        1.0
+      ],
+      "name": "Plane.001"
+    },
+    {
+      "mesh": 1,
+      "name": "Plane.001_0"
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ]
+}
