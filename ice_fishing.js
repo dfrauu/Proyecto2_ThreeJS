@@ -14,9 +14,10 @@
 
 import * as THREE from 'three';
 import { OrbitControls } from '../jsm/controls/OrbitControls.js';
+import { GLTFLoader } from '../jsm/loaders/GLTFLoader.js';
 
 // Variables globales estándar
-let container, scene, camera, renderer, controls;
+let container, scene, camera, renderer, controls, island;
 
 init();
 animate();
@@ -66,28 +67,57 @@ function init() {
         bookshelves.repeat.set( 3, 3 );
     });
     const bookshelf = new THREE.TextureLoader().load('textures/bookshelf.jpg' );
+    const snow = new THREE.TextureLoader().load('textures/descarga4.jpg', function(snow){
+        snow.wrapS = snow.wrapT = THREE.RepeatWrapping;
+        snow.offset.set( 5, 5 );
+        snow.repeat.set( 4, 4 );
+    });
+    
+    const materialSnow = new THREE.MeshToonMaterial({
+        map: snow,
+        color: 0xffffff,
+        brightness: 1.5,
+        contrast: 1.5,
+        side: THREE.DoubleSide
+    });
+    
+    // Isla de nieve https://sketchfab.com/3d-models/low-poly-snow-island-34eeb35d2a514f499d277d535e7999d9
+    const islandLoader = new GLTFLoader();
+    islandLoader.load('model/islandScene.gltf', (gltf) => {
+        // Se ejecuta cuando el objeto se ha cargado correctamente
+        const island = gltf.scene;
+        island.scale.set(50, 50, 50); // Ejemplo: reducir la escala del objeto en un factor de 10
+    
+        island.traverse(function(child) {
+            if (child.isMesh) {
+                child.material = materialSnow;
+            }
+        });
+    
+        scene.add(island); // Añade el objeto a la escena
+    });   
 
 	// Plano de suelo
     const floorGeometry = new THREE.PlaneGeometry(1000, 1000, 100, 100);
-    const floorMaterial = new THREE.MeshLambertMaterial({color: 0xffffff, map: planks, side: THREE.DoubleSide})
+    const floorMaterial = new THREE.MeshLambertMaterial({color: 0xffffff, map: snow, side: THREE.DoubleSide})
 	const floor = new THREE.Mesh( floorGeometry, floorMaterial );
 	floor.position.y = -0.5;
 	floor.rotation.x = Math.PI / 2;
-	scene.add(floor);
+	//scene.add(floor);
 
     // Primer cubo
     const cubeGeometry = new THREE.BoxGeometry( 100, 100, 100 );
     const cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff, map: bookshelf, side: THREE.DoubleSide } );
     const cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
     cube.position.set(100,100,0);
-    scene.add(cube);
+    //scene.add(cube);
 
     // Segundo cubo
     const cube1Geometry = new THREE.BoxGeometry( 100, 100, 100 );
     const cube1Material = new THREE.MeshLambertMaterial( { color: 0xffffff, map: bookshelves, side: THREE.DoubleSide } );
     const cube1 = new THREE.Mesh( cube1Geometry, cube1Material );
     cube1.position.set(-100,100,0);
-    scene.add(cube1);
+    //scene.add(cube1);
 
     // Luz blanca central
     const light = new THREE.AmbientLight( 0xeeeeee );
