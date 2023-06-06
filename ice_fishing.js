@@ -57,7 +57,7 @@ function init() {
 
     // **TEXTURAS Y MODELOS**
     // Textura para la Isla de nieve
-    const snow = new THREE.TextureLoader().load('textures/descarga4.jpg', function(snow){
+    const snow = new THREE.TextureLoader().load('Proyecto2_Threejs/textures/descarga4.jpg', function(snow){
         snow.wrapS = snow.wrapT = THREE.RepeatWrapping;
         snow.offset.set( 5, 5 );
         snow.repeat.set( 4, 4 );
@@ -74,10 +74,10 @@ function init() {
     
     // Isla de nieve https://sketchfab.com/3d-models/low-poly-snow-island-34eeb35d2a514f499d277d535e7999d9
     const islandLoader = new GLTFLoader();
-    islandLoader.load('model/islandScene.gltf', (gltf) => {
+    islandLoader.load('Proyecto2_Threejs/model/islandScene.gltf', (gltf) => {
         // Se ejecuta cuando el objeto se ha cargado correctamente
         const island = gltf.scene;
-        island.scale.set(50, 50, 50); // Ejemplo: aumentar la escala del objeto en un factor de 50
+        island.scale.set(60, 60, 60); // Ejemplo: aumentar la escala del objeto en un factor de 50
     
         island.traverse(function(child) {
             if (child.isMesh) {
@@ -90,7 +90,8 @@ function init() {
 
     // Textura para el pinguino
     const penguinTextureLoader = new THREE.TextureLoader();
-        penguinTextureLoader.load('model/penguin/textures/Material.002_baseColor.png', function(texture) {
+        penguinTextureLoader.load('Proyecto2_Threejs/model/penguin/textures/Material.002_baseColor.png', 
+        function(texture) {
         // Material para el pinguino
         const materialPenguin = new THREE.MeshToonMaterial({
             map: texture,
@@ -99,9 +100,9 @@ function init() {
 
     // Modelo del pinguino
     const penguinLoader = new GLTFLoader();
-    penguinLoader.load('model/penguin/penguin.gltf', (gltf) => {
+    penguinLoader.load('Proyecto2_Threejs/model/penguin/penguin.glb', (gltf) => {
         const penguin = gltf.scene;
-        penguin.scale.set(50, 50, 50); 
+        penguin.scale.set(30, 30, 30); 
         
         penguin.traverse(function(child) {
             if (child.isMesh) {
@@ -113,6 +114,63 @@ function init() {
         });
     });
 
+    // Textura para el iglú
+    const iglooTextureLoader = new THREE.TextureLoader();
+    iglooTextureLoader.load('Proyecto2_Threejs/model/igloo/textures/igloo.jpg', function(iglooTexture) {
+        iglooTexture.wrapS = iglooTexture.wrapT = THREE.RepeatWrapping;
+        iglooTexture.offset.set(5, 5);
+        iglooTexture.repeat.set(4, 4);
+
+        // Material para el iglú
+        const materialIgloo = new THREE.MeshToonMaterial({
+            map: iglooTexture,
+            side: THREE.DoubleSide
+        });
+
+        // Modelo del iglú
+        const iglooLoader = new GLTFLoader();
+        iglooLoader.load('Proyecto2_Threejs/model/igloo/iglu1.glb', (gltf) => {
+            const igloo = gltf.scene;
+            igloo.scale.set(47, 47, 47);
+            igloo.position.set(500, 15, -470);
+            igloo.rotation.set(0, 355, 0);
+
+            igloo.traverse(function(child) {
+                if (child.isMesh) {
+                    child.material = materialIgloo;
+                }
+            });
+
+            scene.add(igloo);
+        });
+    });
+
+    // Textura para la bandera
+    const flagTextureLoader = new THREE.TextureLoader();
+    const flagTexture = flagTextureLoader.load('Proyecto2_Threejs/model/flag/textures/penguin_snow.png');
+
+    // Material para la bandera
+    const materialFlag = new THREE.MeshToonMaterial({
+        map: flagTexture,
+        side: THREE.DoubleSide
+    });
+
+    // Modelo del la bandera
+    const flagLoader = new GLTFLoader();
+    flagLoader.load('Proyecto2_Threejs/model/flag/flag_pole_nato.glb', (gltf) => {
+        const flag = gltf.scene;
+        flag.scale.set(60, 60, 60);
+        flag.position.set(-400, -80, 580);
+        flag.rotation.set(0, 0, 0);
+
+        flag.traverse(function(child) {
+            if (child.isMesh) {
+                child.material = materialFlag;
+            }
+        });
+
+        scene.add(flag);
+    });
 
     // Configuración de las partículas
     var snowflake = new THREE.PointsMaterial({
@@ -195,7 +253,7 @@ function render() {
 // Skybox
 const skyBoxGeometry = new THREE.SphereGeometry(1900,1900,1900); // geometría
 const textureLoader = new THREE.TextureLoader();
-const skyboxTexture = textureLoader.load('textures/nieve.png');
+const skyboxTexture = textureLoader.load('Proyecto2_Threejs/textures/nieve.png');
 const skyBoxMaterial = new THREE.MeshBasicMaterial({map:skyboxTexture, side:THREE.BackSide}) // material
 const skyBox = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial) // fusionar geometría y material 
 scene.add(skyBox)
