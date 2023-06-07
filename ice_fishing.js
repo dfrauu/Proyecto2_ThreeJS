@@ -90,7 +90,7 @@ function init() {
 
     // Textura para el pinguino
     const penguinTextureLoader = new THREE.TextureLoader();
-        penguinTextureLoader.load('Proyecto2_Threejs/model/penguin/textures/Material.002_baseColor.png', 
+        penguinTextureLoader.load('Proyecto2_Threejs/model/penguin/textures/DJCadence_baseColor.png', 
         function(texture) {
         // Material para el pinguino
         const materialPenguin = new THREE.MeshToonMaterial({
@@ -102,7 +102,9 @@ function init() {
     const penguinLoader = new GLTFLoader();
     penguinLoader.load('Proyecto2_Threejs/model/penguin/penguin.glb', (gltf) => {
         const penguin = gltf.scene;
-        penguin.scale.set(30, 30, 30); 
+        penguin.scale.set(70, 70, 70);
+        penguin.position.set(500, 5.5, 0)
+        penguin.rotation.set(0, 80, 0)
         
         penguin.traverse(function(child) {
             if (child.isMesh) {
@@ -160,7 +162,7 @@ function init() {
     flagLoader.load('Proyecto2_Threejs/model/flag/flag_pole_nato.glb', (gltf) => {
         const flag = gltf.scene;
         flag.scale.set(60, 60, 60);
-        flag.position.set(-400, -80, 580);
+        flag.position.set(-400, -85, 580);
         flag.rotation.set(0, 0, 0);
 
         flag.traverse(function(child) {
@@ -172,6 +174,123 @@ function init() {
         scene.add(flag);
     });
 
+    // Textura para el árbol
+    const treeTextureLoader = new THREE.TextureLoader();
+    const treeTexture = treeTextureLoader.load('Proyecto2_Threejs/model/tree/textures/Texture_baseColor.png');
+
+    treeTexture.offset.y = -0.005
+    treeTexture.offset.x = -0.015
+
+    // Material para el árbol
+    const materialTree = new THREE.MeshToonMaterial({
+        map: treeTexture,
+        side: THREE.DoubleSide
+    });
+
+    // Modelo del árbol
+    const treeLoader = new GLTFLoader();
+    treeLoader.load('Proyecto2_Threejs/model/tree/tree.glb', (gltf) => {
+        const tree = gltf.scene;
+        tree.scale.set(0.2, 0.2, 0.2);
+        tree.position.set(400, -10, 580);
+        tree.rotation.set(0, 0, 0);
+
+        tree.traverse(function(child) {
+            if (child.isMesh) {
+                child.material = materialTree;
+            }
+        });
+
+        scene.add(tree);
+    });
+
+    // Textura para la caña de pescar
+    const fishingrodTextureLoader = new THREE.TextureLoader();
+    const fishingrodTexture = fishingrodTextureLoader.load('Proyecto2_Threejs/model/fishing_rod/textures/fishing.png');
+
+    // Material para la caña de pescar
+    const materialfishingrod = new THREE.MeshToonMaterial({
+        map: fishingrodTexture,
+        side: THREE.DoubleSide
+    });
+
+    // Modelo de la caña de pescar
+    const fishingrodLoader = new GLTFLoader();
+    fishingrodLoader.load('Proyecto2_Threejs/model/fishing_rod/fishing.glb', (gltf) => {
+        const fishingrod = gltf.scene;
+        fishingrod.scale.set(0.05, 0.05, 0.05);
+        fishingrod.position.set(500, -30, -20);
+        fishingrod.rotation.set(0, 50.25, 50);
+
+        fishingrod.traverse(function(child) {
+            if (child.isMesh) {
+                child.material = materialfishingrod;
+            }
+        });
+
+        scene.add(fishingrod);
+    });
+
+    // Textura para el pez
+    const fishTextureLoader = new THREE.TextureLoader();
+    const fishTexture = fishTextureLoader.load('Proyecto2_Threejs/model/fish/textures/clownfish.png');
+
+    // Material para el pez
+    const materialfish = new THREE.MeshToonMaterial({
+        map: fishTexture,
+        side: THREE.DoubleSide
+    });
+
+    // Modelo del pez
+    const fishLoader = new GLTFLoader();
+    fishLoader.load('Proyecto2_Threejs/model/fish/fish.glb', (gltf) => {
+        const fish = gltf.scene;
+        fish.scale.set(500, 500, 500);
+        fish.position.set(150, 5, 30);
+        fish.rotation.set(0, 0, 1520);
+
+        fish.traverse(function(child) {
+            if (child.isMesh) {
+                child.material = materialfish;
+            }
+        });
+
+        scene.add(fish);
+    });
+
+    // Textura para el hielo
+    const iceTextureLoader = new THREE.TextureLoader();
+    const icenormalMap = iceTextureLoader.load('Proyecto2_Threejs/model/ice/textures/Ice_Cube_normal.jpeg');
+    const iceocclusionMap = iceTextureLoader.load('Proyecto2_Threejs/model/ice/textures/Ice_Cube_occlusion.png');
+    const icespecularMap = iceTextureLoader.load('Proyecto2_Threejs/model/ice/textures/Ice_Cube_specularGlossiness.png');
+    const icediffuseMap = iceTextureLoader.load('Proyecto2_Threejs/model/ice/textures/Ice_Cube_diffuse.png');
+
+    // Material para el hielo
+    const materialIce = new THREE.MeshPhongMaterial({
+        color: 0xeaf4fa, // Color del material
+        normalMap: icenormalMap, // Mapa de normales
+        aoMap: iceocclusionMap, // Mapa de oclusión
+        specularMap: icespecularMap, // Mapa de especular
+        diffuseMap: icediffuseMap // Mapa de difusión
+    });
+
+    // Modelo del hielo
+    const iceLoader = new GLTFLoader();
+    iceLoader.load('Proyecto2_Threejs/model/ice/ice_cube.glb', (gltf) => {
+        const ice = gltf.scene;
+        ice.scale.set(1.2, 0.18, 1.9);
+        ice.position.set(100, -30, -360);
+        ice.rotation.set(0, 0, 0);
+
+        ice.traverse(function(child) {
+            if (child.isMesh) {
+                child.material = materialIce;
+            }
+        });
+
+        scene.add(ice);
+    });
+
     // Configuración de las partículas
     var snowflake = new THREE.PointsMaterial({
         color: 0xffffff, // Color blanco
@@ -181,7 +300,7 @@ function init() {
     });
   
     var snowparticleCount = 10000; // Cantidad de partículas
-    var range = 3250; // Rango de coordenadas
+    var range = 3300; // Rango de coordenadas
     
     // Crear geometría de partículas y array de posiciones
     var snowparticles = new THREE.BufferGeometry();
