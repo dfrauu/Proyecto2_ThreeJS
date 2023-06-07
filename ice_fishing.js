@@ -305,6 +305,151 @@ function init() {
 
     });
 
+    // Textura para el árbol 2
+    const tree2TextureLoader = new THREE.TextureLoader();
+    const tree2Texture = tree2TextureLoader.load('Proyecto2_Threejs/model/tree/textures/Texture_baseColor.png');
+
+    tree2Texture.offset.y = -0.005
+    tree2Texture.offset.x = -0.015
+
+    // Material para el árbol 2
+    const materialTree2 = new THREE.MeshToonMaterial({
+        map: tree2Texture,
+        side: THREE.DoubleSide
+    });
+
+    // Modelo del árbol 2
+    const tree2Loader = new GLTFLoader();
+    tree2Loader.load('Proyecto2_Threejs/model/tree/tree.glb', (gltf) => {
+        const tree2 = gltf.scene;
+        tree2.scale.set(0.25, 0.25, 0.25);
+        tree2.position.set(-400, -40, -580);
+        tree2.rotation.set(0, 0, 0);
+        tree2.traverse(function(child) {
+            if (child.isMesh) {
+                child.material = materialTree2;
+            }
+        });
+        scene.add(tree2);
+
+    });
+
+    // Textura para el árbol 3
+    const tree3TextureLoader = new THREE.TextureLoader();
+    const tree3Texture = tree3TextureLoader.load('Proyecto2_Threejs/model/tree/textures/Texture_baseColor.png');
+
+    tree3Texture.offset.y = -0.005
+    tree3Texture.offset.x = -0.015
+
+    // Material para el árbol 3
+    const materialTree3 = new THREE.MeshToonMaterial({
+        map: tree3Texture,
+        side: THREE.DoubleSide
+    });
+
+    // Modelo del árbol 3
+    const tree3Loader = new GLTFLoader();
+    tree3Loader.load('Proyecto2_Threejs/model/tree/tree.glb', (gltf) => {
+        const tree3 = gltf.scene;
+        tree3.scale.set(0.3, 0.3, 0.3);
+        tree3.position.set(150, -40, -380);
+        tree3.rotation.set(0, 0, 0);
+        tree3.traverse(function(child) {
+            if (child.isMesh) {
+                child.material = materialTree3;
+            }
+        });
+        scene.add(tree3);
+
+    });
+
+    // Textura para el árbol 4
+    const tree4TextureLoader = new THREE.TextureLoader();
+    const tree4Texture = tree4TextureLoader.load('Proyecto2_Threejs/model/tree/textures/Texture_baseColor.png');
+
+    tree4Texture.offset.y = -0.005
+    tree4Texture.offset.x = -0.015
+
+    // Material para el árbol 4
+    const materialTree4 = new THREE.MeshToonMaterial({
+        map: tree4Texture,
+        side: THREE.DoubleSide
+    });
+
+    // Modelo del árbol 4
+    const tree4Loader = new GLTFLoader();
+    tree4Loader.load('Proyecto2_Threejs/model/tree/tree.glb', (gltf) => {
+        const tree4 = gltf.scene;
+        tree4.scale.set(0.22, 0.22, 0.22);
+        tree4.position.set(-500, 60, -180);
+        tree4.rotation.set(0, 0, 0);
+        tree4.traverse(function(child) {
+            if (child.isMesh) {
+                child.material = materialTree4;
+            }
+        });
+        scene.add(tree4);
+
+    });
+
+    // Textura para el árbol 5
+    const tree5TextureLoader = new THREE.TextureLoader();
+    const tree5Texture = tree5TextureLoader.load('Proyecto2_Threejs/model/tree/textures/Texture_baseColor.png');
+
+    tree5Texture.offset.y = -0.005
+    tree5Texture.offset.x = -0.015
+
+    // Material para el árbol 5
+    const materialTree5 = new THREE.MeshToonMaterial({
+        map: tree5Texture,
+        side: THREE.DoubleSide
+    });
+
+    // Modelo del árbol 5
+    const tree5Loader = new GLTFLoader();
+    tree5Loader.load('Proyecto2_Threejs/model/tree/tree.glb', (gltf) => {
+        const tree5 = gltf.scene;
+        tree5.scale.set(0.27, 0.27, 0.27);
+        tree5.position.set(-602, -95, 280);
+        tree5.rotation.set(0, 0, 0);
+        tree5.traverse(function(child) {
+            if (child.isMesh) {
+                child.material = materialTree5;
+            }
+        });
+        scene.add(tree5);
+
+    });
+
+    // Textura para el árbol 6
+    const tree6TextureLoader = new THREE.TextureLoader();
+    const tree6Texture = tree6TextureLoader.load('Proyecto2_Threejs/model/tree/textures/Texture_baseColor.png');
+
+    tree6Texture.offset.y = -0.005
+    tree6Texture.offset.x = -0.015
+
+    // Material para el árbol 6
+    const materialTree6 = new THREE.MeshToonMaterial({
+        map: tree6Texture,
+        side: THREE.DoubleSide
+    });
+
+    // Modelo del árbol 6
+    const tree6Loader = new GLTFLoader();
+    tree6Loader.load('Proyecto2_Threejs/model/tree/tree.glb', (gltf) => {
+        const tree6 = gltf.scene;
+        tree6.scale.set(0.17, 0.17, 0.17);
+        tree6.position.set(652, -30, 210);
+        tree6.rotation.set(0, 0, 0);
+        tree6.traverse(function(child) {
+            if (child.isMesh) {
+                child.material = materialTree6;
+            }
+        });
+        scene.add(tree6);
+
+    });
+
 
     // Textura para el hielo
     const iceTextureLoader = new THREE.TextureLoader();
@@ -415,6 +560,7 @@ function init() {
     const fishlight = new THREE.PointLight( 0xffffee, 1, 250 );
     fishlight.position.set( 142, 60, 160 );
     fishlight.castShadow = true;
+    fishlight.intensity = 0.35;
     scene.add( fishlight );
 
     // Luz de lampara desde el iglu
@@ -429,8 +575,9 @@ function init() {
     const flaglight = new THREE.SpotLight( 0x86a6bf, 1, 0, Math.PI / 5.5 );
     flaglight.position.set( -400, 150, 580 );
     scene.add( flaglight.target );
-    flaglight.target.position.set( -400, 0, 580 );
+    flaglight.target.position.set( -400, 50, 580 );
     flaglight.castShadow = true;
+    flaglight.intensity = 0.15;
     scene.add( flaglight );
 
 }
