@@ -57,7 +57,7 @@ function init() {
 
     // **TEXTURAS Y MODELOS**
     // Textura para la Isla de nieve
-    const snow = new THREE.TextureLoader().load('Proyecto2_Threejs/textures/descarga4.jpg', function(snow){
+    const snow = new THREE.TextureLoader().load('Proyecto2_Threejs/textures/island.jpg', function(snow){
         snow.wrapS = snow.wrapT = THREE.RepeatWrapping;
         snow.offset.set( 5, 5 );
         snow.repeat.set( 4, 4 );
