@@ -15,28 +15,44 @@
 import * as THREE from 'three';
 import { OrbitControls } from '../jsm/controls/OrbitControls.js';
 import { GLTFLoader } from '../jsm/loaders/GLTFLoader.js';
+import { RenderPass } from '../jsm/postprocessing/RenderPass.js';
+import { EffectComposer } from '../jsm/postprocessing/EffectComposer.js';
+import { UnrealBloomPass } from '../jsm/postprocessing/UnrealBloomPass.js';
 
 // Variables globales estándar
 let container, scene, camera, renderer, controls, island;
+
+// Escena
+scene = new THREE.Scene();
+// Camara
+let SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+let VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+scene.add(camera);
+camera.position.set(0,350,1000);
+camera.lookAt(scene.position);	
+// Renderer
+renderer = new THREE.WebGLRenderer();
+
+renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+const renderScene = new RenderPass(scene, camera);
+const composer = new EffectComposer(renderer);
+composer.addPass(renderScene);
+
+const bloomPass = new UnrealBloomPass(
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    0.15,
+    0.1,
+    0.1
+);
+composer.addPass(bloomPass);
 
 init();
 animate();
 
 // Funciones		
 function init() {
-	// Escena
-	scene = new THREE.Scene();
-	// Camara
-	let SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
-	let VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
-	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-	scene.add(camera);
-	camera.position.set(0,350,1000);
-	camera.lookAt(scene.position);	
-	// Renderer
-	renderer = new THREE.WebGLRenderer();
-
-	renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	container = document.getElementById( 'container' );
 	container.appendChild( renderer.domElement );
@@ -54,6 +70,14 @@ function init() {
         },
         false
     )
+
+    // Skybox
+    const skyBoxGeometry = new THREE.SphereGeometry(1900,1900,1900); // geometría
+    const textureLoader = new THREE.TextureLoader();
+    const skyboxTexture = textureLoader.load('Proyecto2_Threejs/textures/nieve.png');
+    const skyBoxMaterial = new THREE.MeshBasicMaterial({map:skyboxTexture, side:THREE.BackSide}) // material
+    const skyBox = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial) // fusionar geometría y material 
+    scene.add(skyBox)
 
     // **TEXTURAS Y MODELOS**
     // Textura para la Isla de nieve
@@ -103,7 +127,7 @@ function init() {
     penguinLoader.load('Proyecto2_Threejs/model/penguin/penguin.glb', (gltf) => {
         const penguin = gltf.scene;
         penguin.scale.set(70, 70, 70);
-        penguin.position.set(500, 5.5, 0)
+        penguin.position.set(250, 30, 30)
         penguin.rotation.set(0, 80, 0)
         
         penguin.traverse(function(child) {
@@ -114,6 +138,31 @@ function init() {
     
         scene.add(penguin);
         });
+    });
+
+    // Textura para la caña de pescar
+    const fishingrodTextureLoader = new THREE.TextureLoader();
+    const fishingrodTexture = fishingrodTextureLoader.load('Proyecto2_Threejs/model/fishing_rod/textures/fishing.png');
+    // Material para la caña de pescar
+    const materialfishingrod = new THREE.MeshToonMaterial({
+        map: fishingrodTexture,
+        side: THREE.DoubleSide
+    });
+    // Modelo de la caña de pescar
+    const fishingrodLoader = new GLTFLoader();
+    fishingrodLoader.load('Proyecto2_Threejs/model/fishing_rod/fishing.glb', (gltf) => {
+        const fishingrod = gltf.scene;
+        fishingrod.scale.set(0.05, 0.05, 0.05);
+        fishingrod.position.set(250, 30 - 35.5, 30 - 20);
+        fishingrod.rotation.set(0, 50.25, 50);
+
+        fishingrod.traverse(function(child) {
+            if (child.isMesh) {
+                child.material = materialfishingrod;
+            }
+        });
+
+        scene.add(fishingrod);
     });
 
     // Textura para el iglú
@@ -134,8 +183,8 @@ function init() {
         iglooLoader.load('Proyecto2_Threejs/model/igloo/iglu1.glb', (gltf) => {
             const igloo = gltf.scene;
             igloo.scale.set(47, 47, 47);
-            igloo.position.set(500, 15, -470);
-            igloo.rotation.set(0, 355, 0);
+            igloo.position.set(500, 2, -250);
+            igloo.rotation.set(0, 350, 0);
 
             igloo.traverse(function(child) {
                 if (child.isMesh) {
@@ -194,42 +243,16 @@ function init() {
         tree.scale.set(0.2, 0.2, 0.2);
         tree.position.set(400, -10, 580);
         tree.rotation.set(0, 0, 0);
-
         tree.traverse(function(child) {
             if (child.isMesh) {
                 child.material = materialTree;
             }
         });
-
         scene.add(tree);
+
+
     });
 
-    // Textura para la caña de pescar
-    const fishingrodTextureLoader = new THREE.TextureLoader();
-    const fishingrodTexture = fishingrodTextureLoader.load('Proyecto2_Threejs/model/fishing_rod/textures/fishing.png');
-
-    // Material para la caña de pescar
-    const materialfishingrod = new THREE.MeshToonMaterial({
-        map: fishingrodTexture,
-        side: THREE.DoubleSide
-    });
-
-    // Modelo de la caña de pescar
-    const fishingrodLoader = new GLTFLoader();
-    fishingrodLoader.load('Proyecto2_Threejs/model/fishing_rod/fishing.glb', (gltf) => {
-        const fishingrod = gltf.scene;
-        fishingrod.scale.set(0.05, 0.05, 0.05);
-        fishingrod.position.set(500, -30, -20);
-        fishingrod.rotation.set(0, 50.25, 50);
-
-        fishingrod.traverse(function(child) {
-            if (child.isMesh) {
-                child.material = materialfishingrod;
-            }
-        });
-
-        scene.add(fishingrod);
-    });
 
     // Textura para el pez
     const fishTextureLoader = new THREE.TextureLoader();
@@ -267,7 +290,7 @@ function init() {
 
     // Material para el hielo
     const materialIce = new THREE.MeshPhongMaterial({
-        color: 0xeaf4fa, // Color del material
+        color: 0xa2cef2, // Color del material
         normalMap: icenormalMap, // Mapa de normales
         aoMap: iceocclusionMap, // Mapa de oclusión
         specularMap: icespecularMap, // Mapa de especular
@@ -278,8 +301,8 @@ function init() {
     const iceLoader = new GLTFLoader();
     iceLoader.load('Proyecto2_Threejs/model/ice/ice_cube.glb', (gltf) => {
         const ice = gltf.scene;
-        ice.scale.set(1.2, 0.18, 1.9);
-        ice.position.set(100, -30, -360);
+        ice.scale.set(2, 0.5, 3);
+        ice.position.set(80, -55, -50);
         ice.rotation.set(0, 0, 0);
 
         ice.traverse(function(child) {
@@ -299,7 +322,7 @@ function init() {
         opacity: 0.8, // Opacidad de las partículas
     });
   
-    var snowparticleCount = 10000; // Cantidad de partículas
+    var snowparticleCount = 250; // Cantidad de partículas
     var range = 3300; // Rango de coordenadas
     
     // Crear geometría de partículas y array de posiciones
@@ -358,21 +381,12 @@ function init() {
 
 }
 
+
 function animate() {
     requestAnimationFrame(animate);
     controls.update();
 
-    render();
+    // renderer.render(scene, camera);
+    composer.render();
 }
 
-function render() {
-    renderer.render(scene, camera);
-}
-
-// Skybox
-const skyBoxGeometry = new THREE.SphereGeometry(1900,1900,1900); // geometría
-const textureLoader = new THREE.TextureLoader();
-const skyboxTexture = textureLoader.load('Proyecto2_Threejs/textures/nieve.png');
-const skyBoxMaterial = new THREE.MeshBasicMaterial({map:skyboxTexture, side:THREE.BackSide}) // material
-const skyBox = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial) // fusionar geometría y material 
-scene.add(skyBox)
