@@ -29,7 +29,8 @@ let SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
 let VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
 camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
 scene.add(camera);
-camera.position.set(0,350,1000);
+scene.background = new THREE.Color( 0x130f2e );
+camera.position.set(0,750,1700);
 camera.lookAt(scene.position);	
 // Renderer
 renderer = new THREE.WebGLRenderer();
@@ -42,7 +43,7 @@ composer.addPass(renderScene);
 
 const bloomPass = new UnrealBloomPass(
     new THREE.Vector2(window.innerWidth, window.innerHeight),
-    0.15,
+    0.35,
     0.1,
     0.1
 );
@@ -74,7 +75,7 @@ function init() {
     // Skybox
     const skyBoxGeometry = new THREE.SphereGeometry(1900,1900,1900); // geometría
     const textureLoader = new THREE.TextureLoader();
-    const skyboxTexture = textureLoader.load('Proyecto2_Threejs/textures/nieve.png');
+    const skyboxTexture = textureLoader.load('Proyecto2_Threejs/textures/nieve1.png');
     const skyBoxMaterial = new THREE.MeshBasicMaterial({map:skyboxTexture, side:THREE.BackSide}) // material
     const skyBox = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial) // fusionar geometría y material 
     scene.add(skyBox)
@@ -90,7 +91,7 @@ function init() {
     // Material para la Isla de nieve
     const materialSnow = new THREE.MeshToonMaterial({
         map: snow,
-        color: 0xffffff,
+        color: 0xeeeeee,
         brightness: 1.5,
         contrast: 1.5,
         side: THREE.DoubleSide
@@ -112,6 +113,15 @@ function init() {
         scene.add(island); // Añade el objeto a la escena
     });
 
+    
+    // island base
+    const islandbaseGeometry = new THREE.CylinderGeometry( 1175, 1175, 75, 32 );
+    // const islandbaseGeometry = new THREE.BoxGeometry( 1700, 75, 1700 );
+    const islandbasematerial = new THREE.MeshLambertMaterial({ color: 0xeeeeee });
+    const islandbase = new THREE.Mesh( islandbaseGeometry, islandbasematerial );
+    islandbase.position.set(0, -190, -0);
+    scene.add( islandbase );
+
     // Textura para el pinguino
     const penguinTextureLoader = new THREE.TextureLoader();
         penguinTextureLoader.load('Proyecto2_Threejs/model/penguin/textures/DJCadence_baseColor.png', 
@@ -127,7 +137,7 @@ function init() {
     penguinLoader.load('Proyecto2_Threejs/model/penguin/penguin.glb', (gltf) => {
         const penguin = gltf.scene;
         penguin.scale.set(70, 70, 70);
-        penguin.position.set(250, 30, 30)
+        penguin.position.set(250, 30, 180)
         penguin.rotation.set(0, 80, 0)
         
         penguin.traverse(function(child) {
@@ -153,7 +163,7 @@ function init() {
     fishingrodLoader.load('Proyecto2_Threejs/model/fishing_rod/fishing.glb', (gltf) => {
         const fishingrod = gltf.scene;
         fishingrod.scale.set(0.05, 0.05, 0.05);
-        fishingrod.position.set(250, 30 - 35.5, 30 - 20);
+        fishingrod.position.set(250, 30 - 35.5, 180 - 20);
         fishingrod.rotation.set(0, 50.25, 50);
 
         fishingrod.traverse(function(child) {
@@ -164,6 +174,40 @@ function init() {
 
         scene.add(fishingrod);
     });
+
+    // Textura para el pez
+    const fishTextureLoader = new THREE.TextureLoader();
+    const fishTexture = fishTextureLoader.load('Proyecto2_Threejs/model/fish/textures/clownfish.png');
+
+    // Material para el pez
+    const materialfish = new THREE.MeshToonMaterial({
+        map: fishTexture,
+        side: THREE.DoubleSide
+    });
+
+    // Modelo del pez
+    const fishLoader = new GLTFLoader();
+    fishLoader.load('Proyecto2_Threejs/model/fish/fish.glb', (gltf) => {
+        const fish = gltf.scene;
+        fish.scale.set(350, 350, 350);
+        fish.position.set(140, 15, 160);
+        fish.rotation.set(-1.5708, 0, 1.5708);
+
+        fish.traverse(function(child) {
+            if (child.isMesh) {
+                child.material = materialfish;
+            }
+        });
+
+        scene.add(fish);
+    });
+
+    // fishing line
+    const fishlineGeometry = new THREE.CylinderGeometry( 0.5, 0.5, 60, 8 );
+    const fishlinematerial = new THREE.MeshLambertMaterial({ color: 0xffffff });
+    const fishline = new THREE.Mesh( fishlineGeometry, fishlinematerial );
+    fishline.position.set(142, 60, 160);
+    scene.add( fishline );
 
     // Textura para el iglú
     const iglooTextureLoader = new THREE.TextureLoader();
@@ -183,8 +227,9 @@ function init() {
         iglooLoader.load('Proyecto2_Threejs/model/igloo/iglu1.glb', (gltf) => {
             const igloo = gltf.scene;
             igloo.scale.set(47, 47, 47);
-            igloo.position.set(500, 2, -250);
-            igloo.rotation.set(0, 350, 0);
+            igloo.position.set(500, 17, -450);
+            //rotate the igloo 45 degrees in radians
+            igloo.rotation.set(0, 4.7124, 0);
 
             igloo.traverse(function(child) {
                 if (child.isMesh) {
@@ -195,6 +240,13 @@ function init() {
             scene.add(igloo);
         });
     });
+
+    // igloo base
+    const igloobase = new THREE.CylinderGeometry( 150, 150, 100, 32 );
+    const igloobasematerial = new THREE.MeshLambertMaterial({ color: 0xfefefe });
+    const iglooBase = new THREE.Mesh( igloobase, igloobasematerial );
+    iglooBase.position.set(500, -35, -450);
+    scene.add( iglooBase );
 
     // Textura para la bandera
     const flagTextureLoader = new THREE.TextureLoader();
@@ -254,33 +306,6 @@ function init() {
     });
 
 
-    // Textura para el pez
-    const fishTextureLoader = new THREE.TextureLoader();
-    const fishTexture = fishTextureLoader.load('Proyecto2_Threejs/model/fish/textures/clownfish.png');
-
-    // Material para el pez
-    const materialfish = new THREE.MeshToonMaterial({
-        map: fishTexture,
-        side: THREE.DoubleSide
-    });
-
-    // Modelo del pez
-    const fishLoader = new GLTFLoader();
-    fishLoader.load('Proyecto2_Threejs/model/fish/fish.glb', (gltf) => {
-        const fish = gltf.scene;
-        fish.scale.set(500, 500, 500);
-        fish.position.set(150, 5, 30);
-        fish.rotation.set(0, 0, 1520);
-
-        fish.traverse(function(child) {
-            if (child.isMesh) {
-                child.material = materialfish;
-            }
-        });
-
-        scene.add(fish);
-    });
-
     // Textura para el hielo
     const iceTextureLoader = new THREE.TextureLoader();
     const icenormalMap = iceTextureLoader.load('Proyecto2_Threejs/model/ice/textures/Ice_Cube_normal.jpeg');
@@ -301,8 +326,8 @@ function init() {
     const iceLoader = new GLTFLoader();
     iceLoader.load('Proyecto2_Threejs/model/ice/ice_cube.glb', (gltf) => {
         const ice = gltf.scene;
-        ice.scale.set(2, 0.5, 3);
-        ice.position.set(80, -55, -50);
+        ice.scale.set(2, 0.5, 3.5);
+        ice.position.set(80, -65, -10);
         ice.rotation.set(0, 0, 0);
 
         ice.traverse(function(child) {
@@ -315,22 +340,22 @@ function init() {
     });
 
     // Configuración de las partículas
-    var snowflake = new THREE.PointsMaterial({
+    let snowflake = new THREE.PointsMaterial({
         color: 0xffffff, // Color blanco
         size: 5.0, // Tamaño de las partículas
         transparent: true, // Permite la transparencia
         opacity: 0.8, // Opacidad de las partículas
     });
   
-    var snowparticleCount = 250; // Cantidad de partículas
-    var range = 3300; // Rango de coordenadas
+    let snowparticleCount = 1000; // Cantidad de partículas
+    let range = 3300; // Rango de coordenadas
     
     // Crear geometría de partículas y array de posiciones
-    var snowparticles = new THREE.BufferGeometry();
-    var snowpositions = new Float32Array(snowparticleCount * 3);
+    let snowparticles = new THREE.BufferGeometry();
+    let snowpositions = new Float32Array(snowparticleCount * 3);
     
     // Generar posiciones aleatorias para las partículas
-    for (var i = 0; i < snowparticleCount; i++) {
+    for (let i = 0; i < snowparticleCount; i++) {
         snowpositions[i * 3] = Math.random() * range - range / 2; // Coordenada x
         snowpositions[i * 3 + 1] = Math.random() * range - range / 2; // Coordenada y
         snowpositions[i * 3 + 2] = Math.random() * range - range / 2; // Coordenada z
@@ -340,17 +365,17 @@ function init() {
     snowparticles.setAttribute('position', new THREE.BufferAttribute(snowpositions, 3));
     
     // Crear sistema de partículas
-    var snowparticleSystem = new THREE.Points(snowparticles, snowflake);
+    let snowparticleSystem = new THREE.Points(snowparticles, snowflake);
     scene.add(snowparticleSystem);
     
     // Función para animar las partículas
     function animateParticles() {
         requestAnimationFrame(animateParticles);
     
-        var positions = snowparticles.getAttribute('position').array;
+        let positions = snowparticles.getAttribute('position').array;
     
-        for (var i = 0; i < snowparticleCount; i++) {
-            var y = positions[i * 3 + 1];
+        for (let i = 0; i < snowparticleCount; i++) {
+            let y = positions[i * 3 + 1];
             
             // Ajustar la posición en el eje Y para simular la caída
             y -= Math.random() * 5; // Velocidad de caída ajustable
@@ -374,10 +399,39 @@ function init() {
     animateParticles();     
 
     // Luz blanca central
-    const light = new THREE.AmbientLight( 0xeeeeee );
+    const light = new THREE.AmbientLight( 0x666666 );
     light.position.set( 0, 1500, 0 );
     light.castShadow = true;
     scene.add( light );
+
+    // Luz tenue lunar
+    const sunlight = new THREE.DirectionalLight( 0x101010 );
+    sunlight.position.set( 0, 500, 500 );
+    sunlight.castShadow = true;
+    sunlight.target.position.set( 140, 5, 15 );
+    scene.add( sunlight );
+
+    // Luz emitida por el pez
+    const fishlight = new THREE.PointLight( 0xffffee, 1, 250 );
+    fishlight.position.set( 142, 60, 160 );
+    fishlight.castShadow = true;
+    scene.add( fishlight );
+
+    // Luz de lampara desde el iglu
+    const igloolamp = new THREE.SpotLight( 0xdc672e, 1, 400, Math.PI / 5.5 );
+    igloolamp.position.set( 500 - 15, 20, -450 + 50 );
+    scene.add( igloolamp.target );
+    igloolamp.target.position.set( 500 - 15, 20, 0 );
+    igloolamp.castShadow = true;
+    scene.add( igloolamp );
+
+    // Luz de lampara desde la bandera al suelo
+    const flaglight = new THREE.SpotLight( 0x86a6bf, 1, 0, Math.PI / 5.5 );
+    flaglight.position.set( -400, 150, 580 );
+    scene.add( flaglight.target );
+    flaglight.target.position.set( -400, 0, 580 );
+    flaglight.castShadow = true;
+    scene.add( flaglight );
 
 }
 
